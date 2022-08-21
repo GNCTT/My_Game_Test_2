@@ -34,7 +34,9 @@ public class Player extends Entity {
         dir_player = 0;
 
         width *= (float) screenRatioX;
+        width /= 2;
         height *= (float) screenRatioY;
+        height /= 2;
         Log.i("widthh", "" + width + " " + height);
         arrPlayer[0] = Bitmap.createScaledBitmap(arrPlayer[0], width, height, false);
         arrPlayer[1] = Bitmap.createScaledBitmap(arrPlayer[1], width, height, false);
@@ -63,6 +65,7 @@ public class Player extends Entity {
     }
 
     public void update() {
+        x++;
         switch (dir_player) {
             case 0:
                 y ++;
