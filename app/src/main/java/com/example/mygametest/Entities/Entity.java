@@ -12,10 +12,13 @@ public abstract class Entity {
     //rong dai
     protected int width;
     protected int height;
+    protected int speed;
 
     //cac bien kem theo
     protected boolean remove;
     protected boolean beDestroy;
+
+    protected Bitmap ImageEntity;
 
     //Image
 

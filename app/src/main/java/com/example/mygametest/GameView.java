@@ -1,6 +1,7 @@
 package com.example.mygametest;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
@@ -19,13 +20,19 @@ public class GameView extends SurfaceView implements Runnable{
     public static Paint paint;
     public static Canvas canvas;
 
-    public GameView(Context context, int screenX, int screenY) {
+    @Override
+    public Resources getResources() {
+        return super.getResources();
+    }
+
+    public GameView(GameActivity context, int screenX, int screenY) {
         super(context);
+        setFocusable(true);
         this.screenX = screenX;
         this.screenY = screenY;
         background1 = new Background(screenX, screenY, getResources());
         screenRatioX = 1920f / screenX;
-        screenRatioY = 1000f / screenY;
+        screenRatioY = 1080f / screenY;
 
         player = new Player(screenX, screenY, getResources());
         paint = new Paint();
@@ -82,24 +89,6 @@ public class GameView extends SurfaceView implements Runnable{
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case  MotionEvent.ACTION_DOWN:
-                if (event.getX() < screenX / 2) {
-                    player.setDir_player(1);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if (event.getX() < screenX / 2) {
-                    player.setDir_player(3);
-                }
-                break;
-            default:
-                player.isUp = true;
-        }
-        return true;
-    }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
