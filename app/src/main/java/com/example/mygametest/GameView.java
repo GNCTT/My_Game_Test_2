@@ -2,14 +2,19 @@ package com.example.mygametest;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.text.Editable;
+import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
+import android.view.View;
 
-public class GameView extends SurfaceView implements Runnable{
+public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread;
     private boolean isPlaying;
@@ -19,6 +24,11 @@ public class GameView extends SurfaceView implements Runnable{
     private Background background1;
     public static Paint paint;
     public static Canvas canvas;
+
+    //
+    public static Boolean jump = false;
+    public static Boolean left = false;
+    public static Boolean right = false;
 
     @Override
     public Resources getResources() {
@@ -61,6 +71,7 @@ public class GameView extends SurfaceView implements Runnable{
             canvas.drawBitmap(background1.background2, background1.x, background1.y, paint);
 
             player.draw();
+
             getHolder().unlockCanvasAndPost(canvas);
         }
 
@@ -91,16 +102,42 @@ public class GameView extends SurfaceView implements Runnable{
 
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Log.i("tagg", "startPress");
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
         switch (keyCode) {
             case KeyEvent.KEYCODE_D:
                 player.setDir_player(1);
-                Log.i("keyPress", "" + "1");
+                Log.i("tagg", "" + "startPressD");
                 return true;
             case KeyEvent.KEYCODE_A:
-                player.setDir_player(3);
+                Log.i("tagg", "endPr");
+                left = true;
+                return false;
+            case KeyEvent.KEYCODE_W:
+                player.setDir_player(0);
                 return true;
+            default:
+                return super.onKeyUp(keyCode, event);
+        }
+
+    }
+
+    @Override
+    public boolean dispatchKeyEventPreIme(KeyEvent event) {
+        return super.dispatchKeyEventPreIme(event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_D:
+                player.setDir_player(1);
+                Log.i("tagg", "" + "startPressD");
+                return true;
+            case KeyEvent.KEYCODE_A:
+                Log.i("tagg", "endPressA");
+                left = false;
+                return false;
             case KeyEvent.KEYCODE_W:
                 player.setDir_player(0);
                 return true;
@@ -108,4 +145,5 @@ public class GameView extends SurfaceView implements Runnable{
                 return super.onKeyUp(keyCode, event);
         }
     }
+
 }

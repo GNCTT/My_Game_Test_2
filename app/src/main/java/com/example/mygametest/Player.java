@@ -26,6 +26,7 @@ public class Player extends Entity {
     public static int dir_player;
     public static Sprite sprite;
     Bitmap [] arrPlayer;
+    Bitmap originalBm;
     ArrayList<Bitmap> arrPlayer_walk;
 
     public Player(int screenX, int screenY, Resources res) {
@@ -33,11 +34,14 @@ public class Player extends Entity {
         arrPlayer = new Bitmap[3];
         arrPlayer[0] = BitmapFactory.decodeResource(res, R.drawable.walk1);
         sprite = new Sprite(res);
+        originalBm = BitmapFactory.decodeResource(res, R.drawable.background_02); // Let's say this bitmap is 300 x 600 pixels
+        originalBm = Bitmap.createBitmap(originalBm, 0, 0, originalBm.getWidth(), (originalBm.getHeight() / 2));
+        Bitmap bm2 = Bitmap.createBitmap(originalBm, 0, (originalBm.getHeight() / 2), originalBm.getWidth(), (originalBm.getHeight() / 2));
 
         is_moving = false;
         width = arrPlayer[0].getWidth();
         height = arrPlayer[0].getHeight();
-        dir_player = 0;
+        dir_player = -1;
 
         width *= (float) screenRatioX;
         height *= (float) screenRatioY;
@@ -71,21 +75,9 @@ public class Player extends Entity {
         } else {
             animate = 0;
         }
-        ImageEntity = sprite.moving(sprite.player_walk, animate, 20);
-        switch (dir_player) {
-            case 0:
-                y ++;
-                break;
-            case 1:
-                x += speed;
-                break;
-            case 2:
-                y--;
-                break;
-            case 3:
-                x--;
-                break;
-            default: x+= 0;
+        ImageEntity = sprite.moving(sprite.player_idle, animate, 120);
+        if (GameView.left) {
+            x+= speed;
         }
     }
 
@@ -94,6 +86,8 @@ public class Player extends Entity {
     @Override
     public void draw() {
         canvas.drawBitmap(ImageEntity, x, y, paint);
+        canvas.drawBitmap(originalBm, 50, 50, paint);
+
     }
 
     public void setDir_player(int x) {

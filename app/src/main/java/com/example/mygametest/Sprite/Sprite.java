@@ -24,6 +24,7 @@ public class Sprite {
     public Bitmap player_walk6;
 
     public ArrayList<Bitmap> player_walk = new ArrayList<>();
+    public ArrayList<Bitmap> player_idle = new ArrayList<>();
     public Sprite(Resources res) {
         player_walk1 = createBitMap(res, R.drawable.walk1);
         player_walk2 = createBitMap(res, R.drawable.walk2);
@@ -37,6 +38,26 @@ public class Sprite {
         player_walk.add(createBitMap(res, R.drawable.walk4));
         player_walk.add(createBitMap(res, R.drawable.walk5));
         player_walk.add(createBitMap(res, R.drawable.walk6));
+
+
+        //idle_Sprite
+        player_idle.add(createBitMap(res, R.drawable.idle1));
+        player_idle.add(createBitMap(res, R.drawable.idle2));
+        player_idle.add(createBitMap(res, R.drawable.idle3));
+        player_idle.add(createBitMap(res, R.drawable.idle4));
+        player_idle.add(createBitMap(res, R.drawable.idle5));
+        player_idle.add(createBitMap(res, R.drawable.idle6));
+        player_idle.add(createBitMap(res, R.drawable.idle7));
+        player_idle.add(createBitMap(res, R.drawable.idle8));
+        player_idle.add(createBitMap(res, R.drawable.idle9));
+        player_idle.add(createBitMap(res, R.drawable.idle10));
+        player_idle.add(createBitMap(res, R.drawable.idle12));
+        player_idle.add(createBitMap(res, R.drawable.idle13));
+        player_idle.add(createBitMap(res, R.drawable.idle14));
+        player_idle.add(createBitMap(res, R.drawable.idle15));
+        player_idle.add(createBitMap(res, R.drawable.idle16));
+        player_idle.add(createBitMap(res, R.drawable.idle17));
+        player_idle.add(createBitMap(res, R.drawable.idle18));
     }
 
 

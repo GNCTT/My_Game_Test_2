@@ -4,8 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -19,8 +24,22 @@ public class GameActivity extends AppCompatActivity {
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
         gameView = new GameView(this, point.x, point.y);
+        FrameLayout game = new FrameLayout(this);
+        LinearLayout gameWidgets = new LinearLayout(this);
+        ImageButton endGameButton = new ImageButton(this);
+        endGameButton.setImageResource(R.drawable.walk1);
+        TextView myText = new TextView(this);
 
-        setContentView(gameView);
+        endGameButton.setMaxWidth(30);
+        endGameButton.setMaxHeight(30);
+        myText.setText("rIZ..i");
+
+        gameWidgets.addView(myText);
+        gameWidgets.addView(endGameButton);
+
+        game.addView(gameView);
+        game.addView(gameWidgets);
+        setContentView(game);
     }
 
     @Override
