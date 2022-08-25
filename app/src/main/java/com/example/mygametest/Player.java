@@ -1,7 +1,9 @@
 package com.example.mygametest;
 
 import static com.example.mygametest.GameView.canvas;
+import static com.example.mygametest.GameView.left;
 import static com.example.mygametest.GameView.paint;
+import static com.example.mygametest.GameView.right;
 import static com.example.mygametest.GameView.screenRatioX;
 import static com.example.mygametest.GameView.screenRatioY;
 
@@ -21,10 +23,12 @@ public class Player extends Entity {
     int x, y,  animate = 0;
     int width, height;
 
-    public boolean isUp;
     public boolean is_moving;
+    public boolean is_jumping;
+
     public static int dir_player;
     public static Sprite sprite;
+
     Bitmap [] arrPlayer;
     Bitmap originalBm;
     ArrayList<Bitmap> arrPlayer_walk;
@@ -42,13 +46,12 @@ public class Player extends Entity {
         width = arrPlayer[0].getWidth();
         height = arrPlayer[0].getHeight();
         dir_player = -1;
+        is_jumping = false;
 
         width *= (float) screenRatioX;
         height *= (float) screenRatioY;
-        speed = 2;
+        speed = 3;
 
-        width /= 3/2;
-        height /= 3/2;
         Log.i("widthh", "" + width + " " + height);
         arrPlayer[0] = Bitmap.createScaledBitmap(arrPlayer[0], width, height, false);
         ImageEntity = sprite.player_walk1;
@@ -75,13 +78,51 @@ public class Player extends Entity {
         } else {
             animate = 0;
         }
-        ImageEntity = sprite.moving(sprite.player_idle, animate, 120);
-        if (GameView.left) {
-            x+= speed;
+        if (y < 500) {
+            y += 5;
         }
+        if (y == 500) {
+            is_jumping = false;
+        }
+
+//        ImageEntity = sprite.moving(sprite.player_idle, animate, 120);
+        if (GameView.left) {
+            x -= speed;
+
+        }
+        if (GameView.right) {
+            x += speed;
+
+        }
+        if (GameView.jump && is_jumping == false) {
+
+            is_jumping = true;
+
+        }
+        if (is_jumping) {
+            y += 8 - (x - 3) * (x - 3);
+            x++;
+        }
+
+        chooseSprite();
     }
 
 
+
+    public void chooseSprite() {
+        if (left == true && is_jumping == false) {
+            ImageEntity = sprite.moving(sprite.player_walk, animate, 20);
+        }
+        if (right == true && is_jumping == false) {
+            ImageEntity = sprite.moving(sprite.player_walk, animate, 20);
+        }
+        if (is_jumping) {
+            ImageEntity = sprite.moving(sprite.player_jump, animate, 40);
+        }
+        if (left == false && right == false && is_jumping == false) {
+            ImageEntity = sprite.player_idles;
+        }
+    }
 
     @Override
     public void draw() {
