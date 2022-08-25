@@ -5,14 +5,15 @@ import android.graphics.Bitmap;
 
 public abstract class Entity {
 
-    //toado
     protected int x;
     protected int y;
 
-    //rong dai
     protected int width;
     protected int height;
+
+    protected int animate;
     protected int speed;
+
 
     //cac bien kem theo
     protected boolean remove;

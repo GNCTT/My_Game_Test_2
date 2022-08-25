@@ -27,24 +27,27 @@ public class Sprite {
     public ArrayList<Bitmap> player_walk = new ArrayList<>();
     public ArrayList<Bitmap> player_idle = new ArrayList<>();
     public ArrayList<Bitmap> player_jump = new ArrayList<>();
+    public ArrayList<Bitmap> player_walk_flip = new ArrayList<>();
     public Sprite(Resources res) {
-        player_walk1 = createBitMap(res, R.drawable.walk1);
-        player_walk2 = createBitMap(res, R.drawable.walk2);
-        player_walk3 = createBitMap(res, R.drawable.walk3);
-        player_walk4 = createBitMap(res, R.drawable.walk4);
-        player_walk5 = createBitMap(res, R.drawable.walk5);
-        player_walk6 = createBitMap(res, R.drawable.walk6);
-        player_walk.add(createBitMap(res, R.drawable.walk1));
-        player_walk.add(createBitMap(res, R.drawable.walk2));
-        player_walk.add(createBitMap(res, R.drawable.walk3));
-        player_walk.add(createBitMap(res, R.drawable.walk4));
-        player_walk.add(createBitMap(res, R.drawable.walk5));
-        player_walk.add(createBitMap(res, R.drawable.walk6));
+        player_walk1 = createBitMap(res, R.drawable.run1_removebg_preview);
+        player_walk2 = createBitMap(res, R.drawable.run1_removebg_preview);
+        player_walk3 = createBitMap(res, R.drawable.run1_removebg_preview);
+        player_walk4 = createBitMap(res, R.drawable.run1_removebg_preview);
+        player_walk5 = createBitMap(res, R.drawable.run1_removebg_preview);
+        player_walk6 = createBitMap(res, R.drawable.run1_removebg_preview);
+        player_walk.add(createBitMap(res, R.drawable.run1_removebg_preview));
+        player_walk.add(createBitMap(res, R.drawable.run1_removebg_preview));
+        player_walk.add(createBitMap(res, R.drawable.run1_removebg_preview));
+        player_walk.add(createBitMap(res, R.drawable.run1_removebg_preview));
+        player_walk.add(createBitMap(res, R.drawable.run1_removebg_preview));
+        player_walk.add(createBitMap(res, R.drawable.run1_removebg_preview));
+
+        player_walk_flip = createBitMap2(player_walk);
 
 
 
         //idle_Sprite
-        player_idles = createBitMap(res, R.drawable.idle1);
+        player_idles = createBitMap(res, R.drawable.run1_removebg_preview);
         player_idle.add(createBitMap(res, R.drawable.idle1));
         player_idle.add(createBitMap(res, R.drawable.idle1));
         player_idle.add(createBitMap(res, R.drawable.idle1));
@@ -104,23 +107,23 @@ public class Sprite {
         return image;
     }
 
-    public Bitmap createBitMap2(Resources res, int id) {
-        Bitmap image = BitmapFactory.decodeResource(res, id);
-        int width = image.getWidth();
-        int height = image.getHeight();
-        width = width * 2 / 3;
-        height = height * 2 / 3;
-        image = Bitmap.createScaledBitmap(image, width, height, false);
+    public ArrayList<Bitmap> createBitMap2(ArrayList<Bitmap> bitmaps) {
+        ArrayList<Bitmap> bitmaps1 = new ArrayList<>();
+        for (int i = 0; i < bitmaps.size(); i++) {
+            Bitmap image = bitmaps.get(i);
+            image = Bitmap.createScaledBitmap(image, image.getWidth(), image.getHeight(), false);
 
-        Matrix matrix = new Matrix();
+            Matrix matrix = new Matrix();
 
-        matrix.postScale(-1, 1, width, height);
+            matrix.postScale(-1, 1, image.getWidth(), image.getHeight());
 
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(image, width, height, true);
+            image = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), matrix, true);
+            bitmaps1.add(image);
 
-        image = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        }
 
-        return image;
+
+        return bitmaps1;
     }
 
     public Bitmap moving(Bitmap bitmap1, Bitmap bitmap2, Bitmap bitmap3, int animate, int time) {
