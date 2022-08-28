@@ -28,6 +28,9 @@ public class Sprite {
     public ArrayList<Bitmap> player_idle = new ArrayList<>();
     public ArrayList<Bitmap> player_jump = new ArrayList<>();
     public ArrayList<Bitmap> player_walk_flip = new ArrayList<>();
+    public Bitmap brickImage;
+    public Bitmap brickImage2;
+
     public Sprite(Resources res) {
         player_walk1 = createBitMap(res, R.drawable.run1_removebg_preview);
         player_walk2 = createBitMap(res, R.drawable.run1_removebg_preview);
@@ -35,7 +38,7 @@ public class Sprite {
         player_walk4 = createBitMap(res, R.drawable.run1_removebg_preview);
         player_walk5 = createBitMap(res, R.drawable.run1_removebg_preview);
         player_walk6 = createBitMap(res, R.drawable.run1_removebg_preview);
-        player_walk.add(createBitMap(res, R.drawable.run1_removebg_preview));
+        player_walk.add(createBitMap(res, R.drawable.background_01));
         player_walk.add(createBitMap(res, R.drawable.run1_removebg_preview));
         player_walk.add(createBitMap(res, R.drawable.run1_removebg_preview));
         player_walk.add(createBitMap(res, R.drawable.run1_removebg_preview));
@@ -44,6 +47,8 @@ public class Sprite {
 
         player_walk_flip = createBitMap2(player_walk);
 
+        brickImage = createBitMap(res, R.raw.crate, 80, 80);
+        brickImage = createBitMap(res, R.raw.high_jump12, 80, 80);
 
 
         //idle_Sprite
@@ -94,6 +99,21 @@ public class Sprite {
         int height = image.getHeight();
         width = width * 2 / 3;
         height = height * 2 / 3;
+        image = Bitmap.createScaledBitmap(image, width, height, false);
+
+//        Matrix matrix = new Matrix();
+//
+//        matrix.postScale(-1, 1, width, height);
+//
+//        Bitmap scaledBitmap = Bitmap.createScaledBitmap(image, width, height, true);
+//
+//        image = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+
+        return image;
+    }
+
+    public Bitmap createBitMap(Resources res, int id, int width, int height) {
+        Bitmap image = BitmapFactory.decodeResource(res, id);
         image = Bitmap.createScaledBitmap(image, width, height, false);
 
 //        Matrix matrix = new Matrix();

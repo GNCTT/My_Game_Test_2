@@ -1,5 +1,6 @@
 package com.example.mygametest;
 
+import static com.example.mygametest.GameView.brick;
 import static com.example.mygametest.GameView.canvas;
 import static com.example.mygametest.GameView.left;
 import static com.example.mygametest.GameView.paint;
@@ -10,8 +11,11 @@ import static com.example.mygametest.GameView.screenRatioY;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.util.Log;
 
+import com.example.mygametest.Entities.Block;
+import com.example.mygametest.Entities.Brick;
 import com.example.mygametest.Entities.Entity;
 import com.example.mygametest.Sprite.Sprite;
 
@@ -25,8 +29,8 @@ public class Player extends Entity {
     public boolean is_jumping;
 
     public static int dir_player;
+    public Block brick2;
     public static Sprite sprite;
-
 
     public Player(int screenX, int screenY, Resources res) {
         super(screenX, screenY);
@@ -34,17 +38,20 @@ public class Player extends Entity {
         dir_player = -1;
         is_jumping = false;
 
+
         strength_jump = 50;
         speed = 3;
+        width = 80;
+        height = 80;
+        brick2 = new Block(100, 50 + 190, res);
 
         x = 50;
         y = 50;
     }
 
 
-    @Override
-    public boolean collide(Entity other) {
-        return false;
+    public Rect getBound() {
+        return new Rect(x + 50, y + 190 - height,x + 50 + width,y + 190);
     }
 
     public void update() {
@@ -53,31 +60,60 @@ public class Player extends Entity {
         } else {
             animate = 0;
         }
-        if (y < 500) {
-            y += 5;
-        }
+//        if (y < 500) {
+//            y += 5;
+//        }
         if (y >= 500) {
             is_jumping = false;
             strength_jump = 50;
         }
 
+        int deltax = 0;
+        int deltay = 0;
         if (GameView.left) {
-            x -= speed;
+            deltax -= speed;
 
         }
         if (GameView.right) {
-            x += speed;
+            deltax = speed;
 
         }
-        if (GameView.jump && is_jumping == false) {
+        if (GameView.jump) {
+            deltay = - 5;
+        }
+        if (GameView.down) {
+            deltay = 5;
+        }
 
-            is_jumping = true;
+
+
+        Rect rect = brick2.getBound();
+        Rect rect1 = getBound();
+        Log.i("brickCollide", "" + rect.intersect(rect1) + " " + rect.toString() + " " + rect1.toString());
+        brick2.update();
+        x += deltax;
+        if (brick2.collide(this)) {
+            if (deltax > 0) {
+                x = brick2.getBound().left - 80;
+            } else {
+                if (deltax < 0) {
+                    x = brick2.getBound().right;
+                }
+            }
+        }
+        deltax = 0;
+        y += deltay;
+        if (brick2.collide(this)) {
+            if (deltay > 0) {
+                y = brick2.getBound().bottom;
+            } else {
+                if (deltay < 0) {
+                    y = brick2.getBound().top;
+                }
+            }
 
         }
-        if (is_jumping) {
-            y -= strength_jump;
-            strength_jump -= 5;
-        }
+        deltay = 0;
 
         chooseSprite();
     }
@@ -103,6 +139,8 @@ public class Player extends Entity {
     @Override
     public void draw() {
         canvas.drawBitmap(ImageEntity, x, y, paint);
+        canvas.drawRect(getBound(), paint);
+        canvas.drawRect(brick2.getBound(), paint);
     }
 
     public void setDir_player(int x) {

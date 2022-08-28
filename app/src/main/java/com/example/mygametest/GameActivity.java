@@ -23,6 +23,7 @@ public class GameActivity extends AppCompatActivity {
     private Button btn_left;
     private Button btn_right;
     private Button btn_jump;
+    private Button btn_down;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,6 +43,13 @@ public class GameActivity extends AppCompatActivity {
         btn_left.setWidth(20);
         btn_left.setHeight(20);
 
+        btn_down = new Button(this);
+
+        btn_down.setX(300);
+        btn_down.setY(800);
+        btn_down.setWidth(20);
+        btn_down.setHeight(20);
+
         btn_right = new Button(this);
         btn_right.setX(1700);
         btn_right.setY(800);
@@ -57,6 +65,7 @@ public class GameActivity extends AppCompatActivity {
         gameWidgets.addView(btn_left);
         gameWidgets.addView(btn_right);
         gameWidgets.addView(btn_jump);
+        gameWidgets.addView(btn_down);
 
         game.addView(gameView);
         game.addView(gameWidgets);
@@ -79,6 +88,26 @@ public class GameActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        btn_down.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // PRESSED
+                        GameView.down = true;
+                        Log.i("test_button", "press");
+                        return true; // if you want to handle the touch event
+                    case MotionEvent.ACTION_UP:
+                        // RELEASED
+                        GameView.down = false;
+                        Log.i("test_button", "realea");
+                        return true; // if you want to handle the touch event
+                }
+                return false;
+            }
+        });
+
 
         btn_right.setOnTouchListener(new View.OnTouchListener() {
             @Override

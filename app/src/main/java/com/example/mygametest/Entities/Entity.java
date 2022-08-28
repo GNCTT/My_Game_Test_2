@@ -1,6 +1,7 @@
 package com.example.mygametest.Entities;
 
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 
 
 public abstract class Entity {
@@ -31,10 +32,8 @@ public abstract class Entity {
         beDestroy = false;
     }
 
-    public abstract boolean collide(Entity other);
 
     public abstract void update();
     public abstract void draw();
-
 
 }

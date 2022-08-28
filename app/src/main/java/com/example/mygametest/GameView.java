@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.example.mygametest.Entities.Brick;
+
 public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread;
@@ -22,6 +24,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Player player;
     public static float screenRatioX, screenRatioY;
     private Background background1;
+    public static Brick brick;
     public static Paint paint;
     public static Canvas canvas;
 
@@ -29,6 +32,7 @@ public class GameView extends SurfaceView implements Runnable {
     public static Boolean jump = false;
     public static Boolean left = false;
     public static Boolean right = false;
+    public static Boolean down = false;
 
     @Override
     public Resources getResources() {
@@ -40,6 +44,7 @@ public class GameView extends SurfaceView implements Runnable {
         setFocusable(true);
         this.screenX = screenX;
         this.screenY = screenY;
+        brick = new Brick(200, 200, getResources());
         background1 = new Background(screenX, screenY, getResources());
         screenRatioX = 1920f / screenX;
         screenRatioY = 1080f / screenY;
@@ -60,7 +65,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void update() {
         player.update();
-
+        brick.update();
     }
 
     public void draw() {
@@ -68,7 +73,6 @@ public class GameView extends SurfaceView implements Runnable {
         if (getHolder().getSurface().isValid()) {
             canvas = getHolder().lockCanvas();
             canvas.drawBitmap(background1.background, background1.x, background1.y, paint);
-            canvas.drawBitmap(background1.background2, background1.x, background1.y, paint);
 
             player.draw();
 
