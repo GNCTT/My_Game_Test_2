@@ -30,8 +30,12 @@ public class Sprite {
     public ArrayList<Bitmap> player_walk_flip = new ArrayList<>();
     public Bitmap brickImage;
     public Bitmap brickImage2;
+    public Bitmap Image_Item_Normal;
+
+    public Bitmap Image_Item_Big;
 
     public Sprite(Resources res) {
+
         player_walk1 = createBitMap(res, R.drawable.run1_removebg_preview);
         player_walk2 = createBitMap(res, R.drawable.run1_removebg_preview);
         player_walk3 = createBitMap(res, R.drawable.run1_removebg_preview);
@@ -89,6 +93,10 @@ public class Sprite {
         player_jump.add(createBitMap(res, R.raw.high_jump10));
         player_jump.add(createBitMap(res, R.raw.high_jump11));
         player_jump.add(createBitMap(res, R.raw.high_jump12));
+
+        //
+        Image_Item_Big = createBitMap(res, R.drawable.apple, 80, 80);
+        Image_Item_Normal = createBitMap(res, R.drawable.bubble, 80, 80);
     }
 
 

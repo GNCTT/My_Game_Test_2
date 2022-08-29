@@ -3,6 +3,11 @@ package com.example.mygametest;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Point;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.GnssAntennaInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,14 +21,27 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements SensorEventListener {
 
     private GameView gameView;
+
+    public interface Listener {
+        void onTranslation ();
+    }
+    private Listener listener;
+    
+    public void setListener(Listener l) {
+        this.listener = l;
+    }
 
     private Button btn_left;
     private Button btn_right;
     private Button btn_jump;
     private Button btn_down;
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private SensorEventListener sensorEventListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -33,6 +51,21 @@ public class GameActivity extends AppCompatActivity {
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
         gameView = new GameView(this, point.x, point.y);
+        sensorManager = (SensorManager) this.getSystemService(this.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        sensorEventListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                if (listener != null) {
+                    Log.i("valuee", "" + sensorEvent.values[1]);
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {
+
+            }
+        };
 
         FrameLayout game = new FrameLayout(this);
         LinearLayout gameWidgets = new LinearLayout(this);
@@ -77,6 +110,7 @@ public class GameActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         // PRESSED
                         GameView.left = true;
+                        Background.checkChange *= -1;
                         Log.i("test_button", "press");
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
@@ -145,6 +179,13 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    public void register() {
+        sensorManager.registerListener(sensorEventListener, sensor, SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    public void unregister() {
+        sensorManager.unregisterListener(sensorEventListener);
+    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -157,4 +198,13 @@ public class GameActivity extends AppCompatActivity {
         gameView.resume();
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
 }

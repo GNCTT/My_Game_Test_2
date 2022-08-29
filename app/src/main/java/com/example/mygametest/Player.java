@@ -27,7 +27,10 @@ public class Player extends Entity {
     private int strength_jump;
 
     public boolean is_jumping;
+    public static boolean game_over;
 
+    public static int score;
+    public int count_score;
     public static int dir_player;
     public Block brick2;
     public static Sprite sprite;
@@ -36,10 +39,13 @@ public class Player extends Entity {
         super(screenX, screenY);
         sprite = new Sprite(res);
         dir_player = -1;
+        game_over = false;
         is_jumping = false;
 
 
         strength_jump = 50;
+        count_score = 0;
+        score = 0;
         speed = 3;
         width = 80;
         height = 80;
@@ -59,6 +65,11 @@ public class Player extends Entity {
             animate ++;
         } else {
             animate = 0;
+        }
+        count_score ++;
+        if (count_score == 50) {
+            score++;
+            count_score = 0;
         }
 //        if (y < 500) {
 //            y += 5;
@@ -139,8 +150,13 @@ public class Player extends Entity {
     @Override
     public void draw() {
         canvas.drawBitmap(ImageEntity, x, y, paint);
+        canvas.drawText(score + "", 2100, 100, paint);
         canvas.drawRect(getBound(), paint);
-        canvas.drawRect(brick2.getBound(), paint);
+//        canvas.drawRect(brick2.getBound(), paint);
+    }
+
+    public void die() {
+        game_over = true;
     }
 
     public void setDir_player(int x) {

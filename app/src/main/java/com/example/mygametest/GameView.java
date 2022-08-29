@@ -1,10 +1,12 @@
 package com.example.mygametest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.Editable;
 import android.text.method.KeyListener;
@@ -15,6 +17,8 @@ import android.view.SurfaceView;
 import android.view.View;
 
 import com.example.mygametest.Entities.Brick;
+import com.example.mygametest.Entities.Item_Big;
+import com.example.mygametest.Entities.Item_Normal;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -27,6 +31,10 @@ public class GameView extends SurfaceView implements Runnable {
     public static Brick brick;
     public static Paint paint;
     public static Canvas canvas;
+    public static Item_Big item_big;
+    public static Item_Normal item_normal;
+
+    public GameActivity activity;
 
     //
     public static Boolean jump = false;
@@ -41,6 +49,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(GameActivity context, int screenX, int screenY) {
         super(context);
+        this.activity = context;
         setFocusable(true);
         this.screenX = screenX;
         this.screenY = screenY;
@@ -50,7 +59,14 @@ public class GameView extends SurfaceView implements Runnable {
         screenRatioY = 1080f / screenY;
 
         player = new Player(screenX, screenY, getResources());
+        //
+        item_big = new Item_Big(50, 50, getResources());
+        item_normal = new Item_Normal(0, 200, getResources());
+        //
         paint = new Paint();
+        paint.setTextSize(80);
+        paint.setColor(Color.WHITE);
+
     }
 
 
@@ -64,21 +80,44 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void update() {
+        item_big.update();
+        item_normal.update();
         player.update();
         brick.update();
+
     }
 
     public void draw() {
 
         if (getHolder().getSurface().isValid()) {
             canvas = getHolder().lockCanvas();
-            canvas.drawBitmap(background1.background, background1.x, background1.y, paint);
+            Log.i("dada", "" + Background.checkChange);
+            if (Background.checkChange == 1) {
+                canvas.drawBitmap(background1.background, background1.x, background1.y, paint);
+            } else {
+                canvas.drawBitmap(background1.background2, background1.x, background1.y, paint);
+            }
 
             player.draw();
+            item_big.draw();
+            item_normal.draw();
+            if (Player.game_over) {
+                WaitBeforeExit();
+            }
 
             getHolder().unlockCanvasAndPost(canvas);
         }
 
+    }
+
+    public void WaitBeforeExit() {
+        try {
+            Thread.sleep(2000);
+            activity.startActivityForResult(new Intent(activity, MainActivity.class), 0);
+            activity.finish();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sleep () {
@@ -94,6 +133,8 @@ public class GameView extends SurfaceView implements Runnable {
         thread = new Thread(this);
         thread.start();
     }
+
+
 
     public void pause() {
         try {
